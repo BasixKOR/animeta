@@ -49,7 +49,11 @@ export async function downloadAnnPoster(annId: string, outFile: string) {
 
 export async function download(url: string, dest: string) {
   await pipeline(
-    got.get(url, {isStream: true}),
+    got.get(url, {
+      isStream: true,
+      // When DNS resolves to IPv6 address, ETIMEDOUT may occur in some environments
+      dnsLookupIpVersion: 'ipv4',
+    }),
     fs.createWriteStream(dest)
   )
 }
