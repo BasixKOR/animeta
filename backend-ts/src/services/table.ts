@@ -7,15 +7,15 @@ import { db } from "src/database";
 import { getRecordByUserAndWork } from "src/services/record";
 
 export const Periods = {
-  current: Period.parseOrThrow("2025Q4"),
+  current: Period.parseOrThrow("2026Q1"),
   min: Period.parseOrThrow("2014Q2"),
-  upcoming: Period.parseOrThrow("2025Q4"),
+  upcoming: Period.parseOrThrow("2026Q1"),
 }
 
 export const PeriodNotice = {
-  id: "2025Q4",
-  content: "10월 신작 업데이트!",
-  showUntil: new Date("2025-10-15T23:59:59+09:00"),
+  id: "2026Q1",
+  content: "26년 1월 신작 업데이트!",
+  showUntil: new Date("2026-01-15T23:59:59+09:00"),
 };
 
 export function getValidPeriods(): Period[] {
