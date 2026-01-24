@@ -94,6 +94,8 @@
     margin-top: 8px;
     margin-left: -8px;
     width: auto;
+    max-height: 300px;
+    overflow-y: auto;
 }
 .navRow {
     display: flex;
@@ -250,7 +252,7 @@
     .nav {
         @nav-width: 320px;
         left: 50%;
-        margin-left: -@nav-width / 2;
+        margin-left: (-@nav-width / 2);
         width: @nav-width;
         display: flex;
         flex-direction: column;

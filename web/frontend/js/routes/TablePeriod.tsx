@@ -69,7 +69,7 @@ interface HeaderProps {
   onFilterChange: (newFilter: TableFilter) => any;
   period: NonNullable<TableRouteQuery['tablePeriod']>;
   tablePeriods: TableRouteQuery['tablePeriods'];
-  currentUser: any;
+  currentUser: TableRouteQuery['currentUser'];
   totalCount: number;
   addedCount: number;
   showShareButtonPopoverOnce: boolean;
@@ -149,7 +149,7 @@ function Header({ excludeKR, showAddedOnlyFilter, filter, onFilterChange, period
         <PageTitle period={period} tablePeriods={tablePeriods} />
         <ShareButton
           period={period}
-          username={currentUser && currentUser.name}
+          username={currentUser?.name ?? undefined}
           showAdded={showAddedOnlyFilter}
           showPopoverOnce={showShareButtonPopoverOnce}
         />
