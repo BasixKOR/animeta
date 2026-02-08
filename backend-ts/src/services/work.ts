@@ -16,6 +16,8 @@ import { objResults, objResultsNullable } from "src/utils/dataloader";
 import { Episode } from "src/entities/episode.entity";
 import { getOrCreateCompany } from "./admin/company";
 
+const mediaPublicBaseUrl = process.env.ANIMETA_MEDIA_PUBLIC_BASE_URL ?? 'https://storage.googleapis.com/animeta-static/media/';
+
 const dataLoader = new DataLoader<number, Work>(
   objResults(ids => db.findByIds(Work, Array.from(ids)), k => `${k}`, v => `${v.id}`),
   { cache: false }
@@ -40,8 +42,7 @@ export async function getWorkIndex(id: number): Promise<WorkIndex | undefined> {
 }
 
 export function getWorkImageUrl(work: Work): string | null {
-  // TODO: config
-  return work.image_filename ? `https://storage.googleapis.com/animeta-static/media/${work.image_filename}` : null
+  return work.image_filename ? mediaPublicBaseUrl + work.image_filename : null
 }
 
 export async function getOrCreateWork(title: string): Promise<Work> {
