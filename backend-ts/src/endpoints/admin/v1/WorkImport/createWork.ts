@@ -16,7 +16,7 @@ export default async function(params: {
   if (annId) {
     annMetadata = await getAnnMetadata(annId)
   }
-  return await db.transaction(async () => {
+  const {work, imageError} = await db.transaction(async () => {
     const {work, isNew} = await getOrCreateWorkEx(params.title)
     if (!isNew) {
       throw new ValidationError('Work already exists', {id: work.id, title: work.title})
@@ -27,14 +27,29 @@ export default async function(params: {
       version: LATEST_WORK_METADATA_VERSION,
     })
 
+    let imageError = false
     if (annId && annMetadata) {
       await importAnnMetadata(work, annMetadata)
-      await crawlImage(work, {
-        source: 'ann',
-        annId,
-      })
+      try {
+        await crawlImage(work, {
+          source: 'ann',
+          annId,
+        })
+      } catch (e) {
+        console.error(e)
+        imageError = true
+      }
     }
 
-    return await serializeAdminWork(await getWork(work.id))
+    return {
+      work: await serializeAdminWork(await getWork(work.id)),
+      imageError,
+    }
   })
+
+  if (imageError) {
+    throw new ValidationError('Work created but image download failed', {id: work.id, title: work.title})
+  }
+
+  return work
 }
