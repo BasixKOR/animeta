@@ -64,7 +64,7 @@ async function getTransliterationMapping(): Promise<NonNullable<typeof translite
       select name, metadata->>'name_en' as name_en
       from person
       where name != metadata->>'name_en'
-      limit 10000 -- cap memory
+      limit 20000 -- cap memory
     `.format(pgFormat)
     const result: {name: string; name_en: string}[] = await db.query(query.text, query.values)
     const mapping: Map<string, string[]> = new Map()
